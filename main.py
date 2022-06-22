@@ -8,11 +8,12 @@ Created on Sun Jul 12 11:02:06 2020
 #Import libraries
 import os
 from GoogleImageScrapper import GoogleImageScraper
-from patch import webdriver_executable
+from pyvirtualdisplay import Display
+
 
 if __name__ == "__main__":
-    #Define file path
-    webdriver_path = os.path.normpath(os.path.join(os.getcwd(), 'webdriver', webdriver_executable()))
+    # Define file path
+    webdriver_path = '/usr/bin/chromedriver'    
     image_path = os.path.normpath(os.path.join(os.getcwd(), 'photos'))
 
     #Add new search key into array ["cat","t-shirt","apple","orange","pear","fish"]
@@ -24,6 +25,10 @@ if __name__ == "__main__":
     min_resolution=(0,0)
     max_resolution=(9999,9999)
 
+    # run on the virtual framebuffer
+    display = Display(backend='xvfb')
+    display.start()
+    
     #Main program
     for search_key in search_keys:
         image_scrapper = GoogleImageScraper(webdriver_path,image_path,search_key,number_of_images,headless,min_resolution,max_resolution)
@@ -32,3 +37,5 @@ if __name__ == "__main__":
     
     #Release resources    
     del image_scrapper
+    
+    display.stop()
